@@ -1,6 +1,6 @@
 runtime: python
 env: flex
-entrypoint: gunicorn -b :$PORT --timeout 100 main:app
+entrypoint: gunicorn -b :$PORT --timeout 1000 --workers 2 main:app
 
 runtime_config:
   python_version: 3
@@ -16,6 +16,6 @@ env_variables:
   GCS_DATA_BLOB: "train.csv"
 
 resources:
-  cpu: 1
-  memory_gb: 2
+  cpu: 2
+  memory_gb: 8
   disk_size_gb: 10

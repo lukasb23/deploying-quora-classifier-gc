@@ -8,18 +8,18 @@ from core import TextClassifier
 
 #loading buckets
 GCS_BUCKET = os.environ['GCS_BUCKET']
-GCS_MODEL_BLOB = os.environ['GCS_BLOB']
+GCS_MODEL_BLOB = os.environ['GCS_MODEL_BLOB']
 
 app = Flask(__name__)
 
 #loading model
 @app.before_first_request
-def _load_model():
+def _load_func():
     global model
 
     client = storage.Client()
     bucket = client.bucket(GCS_BUCKET)
-    blob = bucket.blob(GCS_BLOB)
+    blob = bucket.blob(GCS_MODEL_BLOB)
 
     if blob.exists():
         f = io.BytesIO()
@@ -32,17 +32,16 @@ def _load_model():
 
 #fit model
 @app.route('/fit', methods=['GET'])
-def fit_model():
+def fit_func():
     tmp_filename = 'model.tmp'
 
-    model = TextClassifier()
-    
     print('Fitting model...')
-    model.fit()
-    
+    model = TextClassifier().fit_model()
 
+    print('Dumping model...')
     joblib.dump(model, tmp_filename)
 
+    print('Prepare saving model...')
     client = storage.Client()
     bucket = client.bucket(GCS_BUCKET)
 
@@ -51,6 +50,7 @@ def fit_model():
 
     blob = bucket.blob(GCS_MODEL_BLOB)
 
+    print('Saving model...')
     with open(tmp_filename, 'rb') as f:
         blob.upload_from_file(f)
 
@@ -58,15 +58,18 @@ def fit_model():
 
 #predict
 @app.route('/predict', methods=['POST'])
-def predict_from_model():
+def predict_func():
     if not model:
-        _load_model()
+        _load_func()
         if not model:
             return 'Model not found at gs://{}'.format(os.path.join(GCS_BUCKET, GCS_MODEL_BLOB))
 
+    print('Predicting...')
     in_text = request.get_json()['text']
 
-    return jsonify(model.predict(in_text))
+    prediction_values = model.predict(in_text).tolist()
+
+    return jsonify({"predictions": prediction_values})
 
 #error handling
 @app.errorhandler(500)
