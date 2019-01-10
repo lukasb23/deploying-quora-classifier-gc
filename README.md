@@ -14,10 +14,10 @@ Adapted requirements.txt slightly for deployment (gcsfs==0.2.0).
 - Fit Model: curl --request GET https://quora-classifier-dot-green-wares-224816.appspot.com/fit
 - Predict Model: 
 
-	content_type="Content-Type: application/json"
-	request="POST"
-	data='{"text":["Why has Einstein become such a genius?", "My only intent is to make a stupid statement on Quora. How shall I proceed?"]}'
-	http="https://quora-classifier-dot-green-wares-224816.appspot.com/predict"
+	content_type="Content-Type: application/json" <br>
+	request="POST" <br>
+	data='{"text":["Why has Einstein become such a genius?", "My only intent is to make a stupid statement on Quora. How shall I proceed?"]}' <br>
+	http="https://quora-classifier-dot-green-wares-224816.appspot.com/predict" <br>
 	curl --header "$content_type" \ --request POST \ --data "$data" \ $http
 
 - gcloud app logs tail -s quora-classifier
