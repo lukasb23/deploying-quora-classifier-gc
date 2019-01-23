@@ -7,7 +7,7 @@ Background on the dataset: see [Quora Insicere Questions Kaggle Challenge](https
 ### Remarks 
 
 Followed the very handy [tutorial of Sylvain Truong](https://towardsdatascience.com/https-towardsdatascience-com-deploying-machine-learning-has-never-been-so-easy-bbdb500a39a). 
-Adapted requirements.txt slightly for deployment (gcsfs==0.2.0).
+Adapted requirements.txt slightly for deployment (dask[complete] and gcsfs).
 
 
 ### Some basic commands: 
