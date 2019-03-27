@@ -1,6 +1,6 @@
 # deploying-quora-classifier-gc
 
-Deployed a simple Quora Insincere Question Detector as RestAPI, in the Google Cloud Environment, using Flask/Gunicorn for app deployment and scikit-learn for model building.
+Deployed a simple Quora Insincere Question Detector in the Google Cloud Environment, using Flask/Gunicorn for app deployment and scikit-learn for model building.
 
 Background on the dataset: see [Quora Insicere Questions Kaggle Challenge](https://www.kaggle.com/c/quora-insincere-questions-classification).
 
